@@ -1,0 +1,6 @@
+let get=document.getElementById("btn")
+get.addEventListener("click",function(){
+let page=1
+let limit=20
+fetchdata(`https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-employees?page=${page}&limit=${limit}`)
+})

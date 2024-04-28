@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API </title>
+    <style>
+#first,#two,#three,#four{display: inline;margin-left: 200px;}
+#table{margin-top: 100px;}
+#table>tbody>tr>td{margin-left: 100px;}
+#table{border: blue solid 1px;margin: auto;margin-top: 100px;}
+#table>#tbody>tr>td{border: blue solid 2px;margin-left:40px ;}
+#parent{position: fixed;top:0;border:lue solid 2px;margin: auto;background-color: blue;margin-left: 100px;}
+    </style>
+</head>
+<body>
+    <div id="parent">
+<div id="first">
+    <input type="number" id="number" placeholder="enter number">
+    <button id="limit">Get Limit</button>
+
+
+</div>
+   
+<div id="two">
+    <select id="select">
+
+        <option>select department</option> 
+        <option>finance</option> 
+        <option>marketing</option>
+        <option>engineering</option>
+        <option>operations</option>
+     </select>
+
+
+
+
+</div>
+    
+
+<div id="three">
+<select id="gender">
+<option>Gender</option>
+<option>male</option>
+<option>female</option>
+</select>
+
+</div>
+
+
+<div id="four">
+<select id="sort">
+    <option>select</option>
+    <option>asc</option>
+    <option>desc</option>
+</select>
+
+</div>
+</div>
+   
+
+
+
+    <table id="table">
+<thead id="thead">
+<th><b>S.NO</b></th>
+<th><b>Name</b></th>
+<th><b>Gender</b></th>
+<th><b>Department</b></th>
+<th><b>Salary</b></th>
+</thead>
+<tbody id="tbody">
+
+</tbody>
+    </table>
+</body>
+
+</html>
+<script>
+
+let limit=document.getElementById("limit")
+let number=document.getElementById("number")
+
+limit.addEventListener("click",function(){
+
+    let value=number.value
+    fetchdata(`https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-employees?page=1&limit=${value}`)
+})
+
+
+
+async function fetchdata(url){
+
+let one=await fetch(url)
+let two=await one.json()
+showdata(two.data)
+
+}
+
+fetchdata("https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-employees")
+
+let select=document.getElementById("select")
+
+select.addEventListener("change",function(){
+    let valueone=select.value
+    fetchdata(`https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-employees?page=1&limit=10&filterBy=department&filterValue=${valueone}`)
+})
+
+
+
+
+
+
+let gender=document.getElementById("gender")
+gender.addEventListener("change",function(){
+
+let getgender=gender.value
+fetchdata(`https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-employees?page=1&limit=10&filterBy=gender&filterValue=${getgender}`)
+
+})
+
+
+
+
+let sort=document.getElementById("sort")
+sort.addEventListener("change",function(){
+
+    let sortvalue=sort.value
+fetchdata(`https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-employees?page=1&limit=10&filterBy=gender&filterValue=female&sort=salary&order=${sortvalue}`)
+
+})
+
+
+let get=document.getElementById("tbody")
+function showdata(array){
+    get.innerHTML=""
+array.map(function(elements){
+
+console.log(elements)
+let row=document.createElement("tr")
+let c1=document.createElement("td")
+let c2=document.createElement("td")
+let c3=document.createElement("td")
+let c4=document.createElement("td")
+let c5=document.createElement("td")
+c1.innerText=elements.id
+c2.innerText=elements.name
+c3.innerText=elements.gender
+c4.innerText=elements.department
+c5.innerText=elements.salary
+row.append(c1,c2,c3,c4,c5)
+get.append(row)
+
+
+
+
+
+
+
+
+
+
+})
+
+
+
+}
+
+
+
+</script>
